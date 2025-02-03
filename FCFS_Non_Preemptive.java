@@ -40,6 +40,9 @@ public class FCFS_Non_Preemptive {
             currentTime = Compilation_time[i];
         }
 
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i]);
+        }
         sc.close();
     }
 
