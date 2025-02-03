@@ -53,7 +53,7 @@ public class SJF_Non_Preemptive {
             if (idx == -1) {
                 currentTime++;
             } else {
-                Compilation_time[i] = currentTime + Burst_time[idx];
+                Compilation_time[idx] = currentTime + Burst_time[idx];
                 currentTime = Compilation_time[idx];
 
                 // Calculate TAT, WT, and RT for the selected process
@@ -62,14 +62,16 @@ public class SJF_Non_Preemptive {
                 Response_time[idx] = Waiting_time[idx]; // Since SJF is non-preemptive
 
                 isCompleted[idx] = true;
-                // completed++;
+                completed++;
             }
         }
+
         // Print results
         System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
         for (int i = 0; i < n; i++) {
             System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
         }
+
         sc.close();
     }
 
