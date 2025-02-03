@@ -8,7 +8,7 @@ public class FCFS_Non_Preemptive {
         
         int Busr_time[] = new int[n];
         
-        int Process_id[] = new String[n];
+        int Process_id[] = new int[n];
         int Arrival_time[] = new int[n];
         int Burst_time[] = new int[n];
         int Compilation_time[] = new int[n];
@@ -35,7 +35,10 @@ public class FCFS_Non_Preemptive {
         }
 
         int currentTime = 0;
-        for (int i = 0; i < n + 1; i++) {
+        for (int i = 0; i < n; i++) {
+            if (currentTime < Arrival_time[i]) {
+                currentTime = Arrival_time[i];
+            }
             Compilation_time[i] = currentTime + Burst_time[i];
             currentTime = Compilation_time[i];
         }
