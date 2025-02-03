@@ -6,8 +6,6 @@ public class FCFS_Non_Preemptive {
         System.out.print("Enter the number of processes: ");
         int n = sc.nextInt();
         
-        int Busr_time[] = new int[n];
-        
         int Process_id[] = new int[n];
         int Arrival_time[] = new int[n];
         int Burst_time[] = new int[n];
@@ -21,7 +19,7 @@ public class FCFS_Non_Preemptive {
             System.out.print("Enter arrival time of P" + Process_id[i] + ": ");
             Arrival_time[i] = sc.nextInt();
             System.out.print("Enter burst time of P" + Process_id[i] + ": ");
-            Busr_time[i] = sc.nextInt();
+            Burst_time[i] = sc.nextInt();
         }
 
         for (int i = 0; i < n - 1; i++) {
