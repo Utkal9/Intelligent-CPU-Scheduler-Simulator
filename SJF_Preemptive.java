@@ -32,6 +32,7 @@ public class SJF_Preemptive {
                     swap(Arrival_time, i, j);
                     swap(Burst_time, i, j);
                     swap(Process_id, i, j);
+                    swap(Remaining_burst_time, i, j);
                 }
             }
         }
