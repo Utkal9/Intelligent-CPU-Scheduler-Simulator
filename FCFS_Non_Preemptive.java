@@ -43,6 +43,13 @@ public class FCFS_Non_Preemptive {
             currentTime = Compilation_time[i];
         }
 
+        // Calculate Turnaround Time (TAT), Waiting Time (WT), Response Time (RT)
+        for (int i = 0; i < n; i++) {
+            Turn_arround_time[i] = Compilation_time[i] - Arrival_time[i];
+            Wating_time[i] = Turn_arround_time[i] - Burst_time[i];
+            Response_time[i] = Wating_time[i]; // Since FCFS is non-preemptive
+        }
+
         for (int i = 0; i < n; i++) {
             System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i]);
         }
