@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class FCFS_Non_Preemptive {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -22,6 +21,7 @@ public class FCFS_Non_Preemptive {
             Burst_time[i] = sc.nextInt();
         }
 
+        // Sorting of all according at  
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (Arrival_time[i] > Arrival_time[j]) {
@@ -32,6 +32,7 @@ public class FCFS_Non_Preemptive {
             }
         }
 
+        // Calculate CT with sorted at values
         int currentTime = 0;
         for (int i = 0; i < n; i++) {
             if (currentTime < Arrival_time[i]) {
@@ -53,12 +54,15 @@ public class FCFS_Non_Preemptive {
         for (int i = 0; i < n; i++) {
             System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Wating_time[i] + "\t" + Response_time[i]);
         }
+
         sc.close();
     }
 
+    // Swap function for sorting
     private static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
 }
+
