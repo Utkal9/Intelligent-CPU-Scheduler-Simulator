@@ -75,7 +75,7 @@ public class SJF_Preemptive {
 
                     Turnaround_time[idx] = Completion_time[idx] - Arrival_time[idx];
                     Waiting_time[idx] = Turnaround_time[idx] - Burst_time[idx];
-                    Response_time[idx] = Waiting_time[idx];
+                    Response_time[idx] = firstExecution[idx] - Arrival_time[idx]; // Calculate response time
                 }
             }
         }
