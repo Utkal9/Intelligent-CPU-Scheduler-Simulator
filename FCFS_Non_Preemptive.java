@@ -10,7 +10,7 @@ public class FCFS_Non_Preemptive {
         int Burst_time[] = new int[n];
         int Compilation_time[] = new int[n];
         int Turn_arround_time[] = new int[n];
-        int Wating_time[] = new int[n];
+        int Waiting_time[] = new int[n];
         int Response_time[] = new int[n];
         
         for (int i = 0; i < n; i++) {
@@ -45,14 +45,14 @@ public class FCFS_Non_Preemptive {
         // Calculate Turnaround Time (TAT), Waiting Time (WT), Response Time (RT)
         for (int i = 0; i < n; i++) {
             Turn_arround_time[i] = Compilation_time[i] - Arrival_time[i];
-            Wating_time[i] = Turn_arround_time[i] - Burst_time[i];
-            Response_time[i] = Wating_time[i]; // Since FCFS is non-preemptive
+            Waiting_time[i] = Turn_arround_time[i] - Burst_time[i];
+            Response_time[i] = Waiting_time[i]; // Since FCFS is non-preemptive
         }
 
         // Print results
         System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
         for (int i = 0; i < n; i++) {
-            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Wating_time[i] + "\t" + Response_time[i]);
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
         }
 
         sc.close();

@@ -11,7 +11,7 @@ public class SJF_Non_Preemptive {
         int Burst_time[] = new int[n];
         int Compilation_time[] = new int[n];
         int Turn_arround_time[] = new int[n];
-        int Wating_time[] = new int[n];
+        int Waiting_time[] = new int[n];
         int Response_time[] = new int[n];
         
         for (int i = 0; i < n; i++) {
@@ -33,12 +33,43 @@ public class SJF_Non_Preemptive {
             }
         }
 
+        int currentTime = 0;
+        boolean[] isCompleted = new boolean[n];
+        int completed = 0;
+
+        while (completed < n) {
+            // Find the process with the shortest burst time that has arrived
+            int idx = -1;
+            int minBurstTime = Integer.MAX_VALUE;
+
+            for (int i = 0; i < n; i++) {
+                if (!isCompleted[i] && Arrival_time[i] <= currentTime && Burst_time[i] < minBurstTime) {
+                    minBurstTime = Burst_time[i];
+                    idx = i;
+                }
+            }
+
+            // If no process has arrived yet, increment time
+            if (idx == -1) {
+                currentTime++;
+            } else {
+                Compilation_time[i] = currentTime + Burst_time[idx];
+                currentTime = Compilation_time[idx];
+
+                // Calculate TAT, WT, and RT for the selected process
+                Turn_arround_time[idx] = Compilation_time[idx] - Arrival_time[idx];
+                Waiting_time[idx] = Turn_arround_time[idx] - Burst_time[idx];
+                Response_time[idx] = Waiting_time[idx]; // Since SJF is non-preemptive
+
+                isCompleted[idx] = true;
+                // completed++;
+            }
+        }
         // Print results
         System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
         for (int i = 0; i < n; i++) {
-            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Wating_time[i] + "\t" + Response_time[i]);
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
         }
-
         sc.close();
     }
 
