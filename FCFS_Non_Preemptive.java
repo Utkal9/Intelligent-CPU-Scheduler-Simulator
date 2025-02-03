@@ -50,8 +50,10 @@ public class FCFS_Non_Preemptive {
             Response_time[i] = Wating_time[i]; // Since FCFS is non-preemptive
         }
 
+        // Print results
+        System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
         for (int i = 0; i < n; i++) {
-            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i]);
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Compilation_time[i] + "\t" + Turn_arround_time[i] + "\t" + Wating_time[i] + "\t" + Response_time[i]);
         }
         sc.close();
     }
