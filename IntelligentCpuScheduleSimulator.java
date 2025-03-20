@@ -1,56 +1,90 @@
 import java.util.*;
 
 public class IntelligentCpuScheduleSimulator {
-    static double bestAWT = Double.MAX_VALUE;
-    static String bestAlgo = "";
-    static int choice;
-    
-    // Global variables to store process information
-    static int n; // Number of processes
-    static int[] Process_id, Arrival_time, Burst_time, Priority, Completion_time, Turnaround_time, Waiting_time, Response_time;
+
+    static int n;  // Number of processes
+    static int[] Process_id;
+    static int[] Arrival_time;
+    static int[] Burst_time;
+    static int[] Priority;
+    static int[] Completion_time;
+    static int[] Turnaround_time;
+    static int[] Waiting_time;
+    static int[] Response_time;
     static int[] Remaining_burst_time;
-    static boolean[] isFirstResponse, isCompleted;
-    static int[] bestProcess_id, bestArrival_time, bestBurst_time, bestCompletion_time, bestTurnaround_time, bestWaiting_time, bestResponse_time;
+    static boolean[] isFirstResponse;
+    static boolean[] isCompleted;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        
-        // Step 1: Take all input data once
-        takeInputs(sc);
+    static List<String> bestAlgos = new ArrayList<>();
+    static List<SchedulingResult> bestAlgoResults = new ArrayList<>();
+    static double bestAWT = Double.MAX_VALUE;  // Best average waiting time
 
-        // Step 2: Run selected scheduling algorithms
-        while (true) {
-            System.out.println("\nSelect Scheduling Algorithm to calculate Average Waiting Time:");
-            System.out.println("1. FCFS");
-            System.out.println("2. SJF (Non-Preemptive)");
-            System.out.println("3. SJF (Preemptive)");
-            System.out.println("4. Round Robin");
-            System.out.println("5. Priority Scheduling");
-            System.out.println("0. Exit & Show Best Algorithm");
-            System.out.print("Enter your choice: ");
-            choice = sc.nextInt();
+    // SchedulingResult class to hold the process information
+    static class SchedulingResult {
+        int[] Process_id;
+        int[] Arrival_time;
+        int[] Burst_time;
+        int[] Completion_time;
+        int[] Turnaround_time;
+        int[] Waiting_time;
+        int[] Response_time;
 
-            if (choice == 0) break;
-
-            switch (choice) {
-                case 1: fcfs(); break;
-                case 2: sjfNonPreemptive(); break;
-                case 3: sjfPreemptive(); break;
-                case 4: roundRobin(sc); break;
-                case 5: priorityScheduling(sc); break;
-                default: System.out.println("Invalid choice! Try again.");
-            }
+        SchedulingResult(int[] Process_id, int[] Arrival_time, int[] Burst_time, int[] Completion_time, int[] Turnaround_time, int[] Waiting_time, int[] Response_time) {
+            this.Process_id = Process_id;
+            this.Arrival_time = Arrival_time;
+            this.Burst_time = Burst_time;
+            this.Completion_time = Completion_time;
+            this.Turnaround_time = Turnaround_time;
+            this.Waiting_time = Waiting_time;
+            this.Response_time = Response_time;
         }
-
-        // Display the best algorithm
-        if (!bestAlgo.isEmpty()) {
-            System.out.println("\nBest Scheduling Algorithm: " + bestAlgo);
-            displayResults(bestProcess_id.length, choice, bestProcess_id, bestArrival_time, bestBurst_time, bestCompletion_time, bestTurnaround_time, bestWaiting_time, bestResponse_time);
-        }
-
-        sc.close();
     }
 
+    // Method to calculate the scheduling algorithm results
+    private static void calculate(int[] Process_id, int[] Arrival_time, int[] Burst_time, int[] Completion_time, int[] Turnaround_time, int[] Waiting_time, int[] Response_time, String algorithmName) {
+        double totalWT = 0;
+
+        for (int i = 0; i < n; i++) {
+            totalWT += Waiting_time[i];
+        }
+
+        double avgWT = totalWT / n;
+        System.out.println("Average Waiting Time for " + algorithmName + ": " + avgWT + "\n");
+
+        // If a new best AWT is found, update the best results
+        if (avgWT < bestAWT) {
+            bestAWT = avgWT;
+            bestAlgos.clear();  // Clear previous best algorithms as we found a new best one
+            bestAlgos.add(algorithmName);  // Add current algorithm to bestAlgos list
+
+            // Store the current algorithm's process info
+            bestAlgoResults.clear();
+            bestAlgoResults.add(new SchedulingResult(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time));
+        } else if (avgWT == bestAWT) {
+            bestAlgos.add(algorithmName);  // If AWT is same, add this algorithm too
+
+            // Store this algorithm's process info
+            bestAlgoResults.add(new SchedulingResult(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time));
+        }
+    }
+
+    // Method to display the results from the best scheduling algorithm
+    private static void displayResults(SchedulingResult result) {
+        int[] Process_id = result.Process_id;
+        int[] Arrival_time = result.Arrival_time;
+        int[] Burst_time = result.Burst_time;
+        int[] Completion_time = result.Completion_time;
+        int[] Turnaround_time = result.Turnaround_time;
+        int[] Waiting_time = result.Waiting_time;
+        int[] Response_time = result.Response_time;
+
+        System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
+        }
+    }
+
+    // Method to take inputs from the user
     private static void takeInputs(Scanner sc) {
         System.out.print("Enter the number of processes: ");
         n = sc.nextInt();
@@ -76,6 +110,7 @@ public class IntelligentCpuScheduleSimulator {
             Remaining_burst_time[i] = Burst_time[i];
             isFirstResponse[i] = true;
         }
+
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (Arrival_time[i] > Arrival_time[j]) {
@@ -87,35 +122,12 @@ public class IntelligentCpuScheduleSimulator {
         }
     }
 
-    private static void displayResults(int n, int choice, int[] Process_id, int[] Arrival_time, int[] Burst_time, int[] Completion_time, int[] Turnaround_time, int[] Waiting_time, int[] Response_time) {
-        double totalWT = 0;
-        if(choice==0){
-            System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
-        }
-        
-        for (int i = 0; i < n; i++) {
-            totalWT += Waiting_time[i];
-            if(choice==0){
-                System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
-            }
-        }
-
-        double avgWT = totalWT / n;
-        System.out.println("\nAverage Waiting Time: " + avgWT);
-
-        if (avgWT < bestAWT) {
-            bestAWT = avgWT;
-            bestAlgo = Thread.currentThread().getStackTrace()[2].getMethodName().toUpperCase();
-            bestProcess_id = Process_id.clone();
-            bestArrival_time = Arrival_time.clone();
-            bestBurst_time = Burst_time.clone();
-            bestCompletion_time = Completion_time.clone();
-            bestTurnaround_time = Turnaround_time.clone();
-            bestWaiting_time = Waiting_time.clone();
-            bestResponse_time = Response_time.clone();
-        }
+    // Helper method to swap values in an array
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
-
     private static void fcfs() {
         // FCFS Scheduling Logic
         int[] Completion_time = new int[n];
@@ -138,10 +150,9 @@ public class IntelligentCpuScheduleSimulator {
             Waiting_time[i] = Turnaround_time[i] - Burst_time[i];
             Response_time[i] = Waiting_time[i];
         }
-
-        displayResults(n, choice, Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time);
+        
+        calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "FCFS");
     }
-
     private static void sjfNonPreemptive() {
         // SJF Non-Preemptive Scheduling Logic
         int[] Completion_time = new int[n];
@@ -149,41 +160,42 @@ public class IntelligentCpuScheduleSimulator {
         int[] Waiting_time = new int[n];
         int[] Response_time = new int[n];
         boolean[] isCompleted = new boolean[n];
-
+        int[] burstTimeCopy = Arrays.copyOf(Burst_time, n);  // Copy Burst time to preserve the original
+        
         Integer[] order = new Integer[n];
         for (int i = 0; i < n; i++) order[i] = i;
         Arrays.sort(order, Comparator.comparingInt(i -> Arrival_time[i]));
-
+    
         int currentTime = 0, completed = 0;
-
+    
         while (completed < n) {
             int idx = -1, minBurstTime = Integer.MAX_VALUE;
-
+    
             for (int i = 0; i < n; i++) {
-                if (!isCompleted[i] && Arrival_time[i] <= currentTime && Burst_time[i] < minBurstTime) {
-                    minBurstTime = Burst_time[i];
+                if (!isCompleted[i] && Arrival_time[i] <= currentTime && burstTimeCopy[i] < minBurstTime) {
+                    minBurstTime = burstTimeCopy[i];
                     idx = i;
                 }
             }
-
+    
             if (idx == -1) {
                 currentTime++;
             } else {
-                Completion_time[idx] = currentTime + Burst_time[idx];
+                Completion_time[idx] = currentTime + burstTimeCopy[idx];
                 currentTime = Completion_time[idx];
-
+    
                 Turnaround_time[idx] = Completion_time[idx] - Arrival_time[idx];
                 Waiting_time[idx] = Turnaround_time[idx] - Burst_time[idx];
                 Response_time[idx] = Waiting_time[idx];
-
+    
                 isCompleted[idx] = true;
                 completed++;
             }
         }
-
-        displayResults(n, choice, Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time);
+    
+        calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "SJF (Non-Preemptive)");
     }
-
+    
     private static void sjfPreemptive() {
         // SJF Preemptive Scheduling Logic
         int[] Remaining_burst_time = new int[n];
@@ -193,34 +205,35 @@ public class IntelligentCpuScheduleSimulator {
         int[] Response_time = new int[n];
         int[] firstExecution = new int[n];
         boolean[] isCompleted = new boolean[n];
-
+        int[] burstTimeCopy = Arrays.copyOf(Burst_time, n);  // Copy Burst time to preserve the original
+    
         for (int i = 0; i < n; i++) {
-            Remaining_burst_time[i] = Burst_time[i];
+            Remaining_burst_time[i] = burstTimeCopy[i];
             firstExecution[i] = -1;
         }
-
+    
         int currentTime = 0, completed = 0;
-
+    
         while (completed < n) {
             int idx = -1, minBurstTime = Integer.MAX_VALUE;
-
+    
             for (int i = 0; i < n; i++) {
                 if (!isCompleted[i] && Arrival_time[i] <= currentTime && Remaining_burst_time[i] < minBurstTime) {
                     minBurstTime = Remaining_burst_time[i];
                     idx = i;
                 }
             }
-
+    
             if (idx == -1) {
                 currentTime++;
             } else {
                 if (firstExecution[idx] == -1) {
                     firstExecution[idx] = currentTime;
                 }
-
+    
                 Remaining_burst_time[idx]--;
                 currentTime++;
-
+    
                 if (Remaining_burst_time[idx] == 0) {
                     isCompleted[idx] = true;
                     completed++;
@@ -231,10 +244,10 @@ public class IntelligentCpuScheduleSimulator {
                 }
             }
         }
-
-        displayResults(n, choice, Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time);
+    
+        calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "SJF (Preemptive)");
     }
-
+    
     private static void roundRobin(Scanner sc) {
         // Round Robin Scheduling Logic
         System.out.print("Enter time quantum: ");
@@ -247,15 +260,12 @@ public class IntelligentCpuScheduleSimulator {
         int[] Response_time = new int[n];
         boolean[] isFirstResponse = new boolean[n];
     
-        // Copy Burst Time to remaining burst time
         System.arraycopy(Burst_time, 0, Remaining_burst_time, 0, n);
-    
-        // Initialize all processes as unprocessed
         Arrays.fill(isFirstResponse, true);
     
         Queue<Integer> queue = new LinkedList<>();
         int currentTime = 0, completed = 0, lastAdded = 0;
-        
+    
         while (completed < n) {
             // Add all processes that have arrived by the current time to the queue
             while (lastAdded < n && Arrival_time[lastAdded] <= currentTime) {
@@ -301,11 +311,8 @@ public class IntelligentCpuScheduleSimulator {
             }
         }
     
-        // Display the results for Round Robin
-        displayResults(n, choice, Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time);
+        calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "Round Robin");
     }
-    
-
     private static void priorityScheduling(Scanner sc) {
         for (int i = 0; i < n; i++) {
             System.out.print("Enter priority of P" + Process_id[i] + ": ");
@@ -365,12 +372,29 @@ public class IntelligentCpuScheduleSimulator {
                 }
             }
         }
-
-        displayResults(n, choice, Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time);
+        
+        calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "Priority Scheduling");
     }
-    private static void swap(int[] arr, int i, int j) {
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Taking user input for processes
+        takeInputs(sc);
+        fcfs();
+        sjfNonPreemptive();
+        sjfPreemptive();
+        roundRobin(sc);
+        priorityScheduling(sc);
+        System.out.println("\nBest Scheduling Algorithms (Lowest Average Waiting Time):");
+        for (String algo : bestAlgos) {
+            System.out.println(algo);
+        }
+
+        System.out.println("\nResults for the best algorithm (Average Waiting Time = " + bestAWT + "):");
+        for (SchedulingResult result : bestAlgoResults) {
+            displayResults(result);
+        }
+
+        sc.close();
     }
 }
