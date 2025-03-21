@@ -78,10 +78,13 @@ public class IntelligentCpuScheduleSimulator {
         int[] Waiting_time = result.Waiting_time;
         int[] Response_time = result.Response_time;
 
+        System.out.print("---------------------------------------------------------");
         System.out.println("\nProcess\tAT\tBT\tCT\tTAT\tWT\tRT");
+        System.out.println("---------------------------------------------------------");
         for (int i = 0; i < n; i++) {
             System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
         }
+        System.out.println("---------------------------------------------------------");
     }
 
     // Method to take inputs from the user
@@ -150,7 +153,16 @@ public class IntelligentCpuScheduleSimulator {
             Waiting_time[i] = Turnaround_time[i] - Burst_time[i];
             Response_time[i] = Waiting_time[i];
         }
+        System.out.println("\nFCFS Scheduling Results:");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("Process\tAT\tBT\tCT\tTAT\tWT\tRT");
+        System.out.println("---------------------------------------------------------");
         
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
+        }
+    
+        System.out.println("---------------------------------------------------------");
         calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "FCFS");
     }
     private static void sjfNonPreemptive() {
@@ -193,6 +205,16 @@ public class IntelligentCpuScheduleSimulator {
             }
         }
     
+        System.out.println("\nSJF(Non-Preemptive) Scheduling Results:");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("Process\tAT\tBT\tCT\tTAT\tWT\tRT");
+        System.out.println("---------------------------------------------------------");
+        
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
+        }
+    
+        System.out.println("---------------------------------------------------------");
         calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "SJF (Non-Preemptive)");
     }
     
@@ -245,6 +267,16 @@ public class IntelligentCpuScheduleSimulator {
             }
         }
     
+        System.out.println("\nSJF(Preemptive) Scheduling Results:");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("Process\tAT\tBT\tCT\tTAT\tWT\tRT");
+        System.out.println("---------------------------------------------------------");
+        
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
+        }
+    
+        System.out.println("---------------------------------------------------------");
         calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "SJF (Preemptive)");
     }
     
@@ -311,70 +343,109 @@ public class IntelligentCpuScheduleSimulator {
             }
         }
     
+        System.out.println("\nRound Robin Scheduling Results:");
+        System.out.println("---------------------------------------------------------");
+        System.out.println("Process\tAT\tBT\tCT\tTAT\tWT\tRT");
+        System.out.println("---------------------------------------------------------");
+        
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
+        }
+    
+        System.out.println("---------------------------------------------------------");
         calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "Round Robin");
     }
     private static void priorityScheduling(Scanner sc) {
+        // Reset isFirstResponse for each process
+        boolean[] isFirstResponse = new boolean[n];
         for (int i = 0; i < n; i++) {
             System.out.print("Enter priority of P" + Process_id[i] + ": ");
             Priority[i] = sc.nextInt();
+            Remaining_burst_time[i] = Burst_time[i];  // Reset Remaining time to Burst time
+            isFirstResponse[i] = true;  // Reset the response flag
         }
+    
         System.out.print("Enter priority order (1 for higher number = higher priority, 2 for lower number = higher priority): ");
         int priorityOrder = sc.nextInt();
-        
-        // Use global arrays (don't redefine)
-        int[] Remaining_time = Arrays.copyOf(Remaining_burst_time, n); // Copy remaining burst time
+    
+        // Arrays to store completion, turnaround, waiting, and response times
         int[] Completion_time = new int[n];
         int[] Turnaround_time = new int[n];
         int[] Waiting_time = new int[n];
         int[] Response_time = new int[n];
-        
+    
         int currentTime = 0, completed = 0;
-
+    
+        // Sorting by Arrival Time first and then by Priority for the same arrival time
+        Integer[] order = new Integer[n];
+        for (int i = 0; i < n; i++) order[i] = i;
+        Arrays.sort(order, (i1, i2) -> {
+            if (Arrival_time[i1] == Arrival_time[i2]) {
+                return Integer.compare(Priority[i2], Priority[i1]);  // Higher priority first if same arrival time
+            }
+            return Integer.compare(Arrival_time[i1], Arrival_time[i2]);
+        });
+    
         while (completed < n) {
             int idx = -1;
             int bestPriority = (priorityOrder == 1) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-
-            // Select the process with the highest priority
+    
+            // Look for the process with the highest priority that is ready to execute
             for (int i = 0; i < n; i++) {
-                if (Arrival_time[i] <= currentTime && Remaining_time[i] > 0) {
-                    if ((priorityOrder == 1 && Priority[i] > bestPriority) || 
-                        (priorityOrder == 2 && Priority[i] < bestPriority) ||
-                        (Priority[i] == bestPriority && Arrival_time[i] < Arrival_time[idx])) { 
-                        bestPriority = Priority[i];
-                        idx = i;
+                int currentProcess = order[i];
+                if (Arrival_time[currentProcess] <= currentTime && Remaining_burst_time[currentProcess] > 0) {
+                    if ((priorityOrder == 1 && Priority[currentProcess] > bestPriority) || (priorityOrder == 2 && Priority[currentProcess] < bestPriority)) {
+                        bestPriority = Priority[currentProcess];
+                        idx = currentProcess;
                     }
                 }
             }
-
+    
             if (idx == -1) {
-                // If no process is ready, increment time to the next arrival
+                // If no process is ready, jump to the next process arrival time
                 int nextArrival = Integer.MAX_VALUE;
                 for (int i = 0; i < n; i++) {
-                    if (Remaining_time[i] > 0 && Arrival_time[i] > currentTime) {
+                    if (Arrival_time[i] > currentTime && Remaining_burst_time[i] > 0) {
                         nextArrival = Math.min(nextArrival, Arrival_time[i]);
                     }
                 }
-                currentTime = nextArrival;
+                currentTime = nextArrival;  // Jump to the next arrival time
             } else {
+                // Process is selected, so calculate response time for the first execution
                 if (isFirstResponse[idx]) {
                     Response_time[idx] = currentTime - Arrival_time[idx];
-                    isFirstResponse[idx] = false;
+                    isFirstResponse[idx] = false;  // Mark as processed
                 }
-
-                Remaining_time[idx]--;
+    
+                // Process runs for one time unit
+                Remaining_burst_time[idx]--;
                 currentTime++;
-
-                if (Remaining_time[idx] == 0) {
+    
+                // Process completion
+                if (Remaining_burst_time[idx] == 0) {
                     Completion_time[idx] = currentTime;
                     Turnaround_time[idx] = Completion_time[idx] - Arrival_time[idx];
                     Waiting_time[idx] = Turnaround_time[idx] - Burst_time[idx];
-                    completed++;
+                    completed++;  // Increment completed processes count
                 }
             }
         }
+    
+        System.out.println("\nPriority Scheduling Results:");
+        System.out.println("-------------------------------------------------------------------------");
+        System.out.println("Process\tAT\tBT\tPriority\tCT\tTAT\tWT\tRT");
+        System.out.println("-------------------------------------------------------------------------");
         
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + Process_id[i] + "\t" + Arrival_time[i] + "\t" + Burst_time[i] + "\t" + Priority[i] + "\t\t" + Completion_time[i] + "\t" + Turnaround_time[i] + "\t" + Waiting_time[i] + "\t" + Response_time[i]);
+        }
+    
+        System.out.println("-------------------------------------------------------------------------");
+        // Call function to display results
         calculate(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time, "Priority Scheduling");
-    }
+    }    
+    
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
