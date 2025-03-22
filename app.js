@@ -14,6 +14,9 @@ document
 document
     .getElementById("priorityButton")
     .addEventListener("click", runPriorityScheduling);
+document
+    .getElementById("compareAlgorithmsButton")
+    .addEventListener("click", compareAlgorithms);
 
 let processes = [];
 
@@ -36,12 +39,12 @@ function generateProcessInputs() {
         processDiv.classList.add("process");
 
         processDiv.innerHTML = `
-            <h3>Process ${i + 1}</h3>
-            <label>Arrival Time:</label>
-            <input type="number" class="arrivalTime" placeholder="Enter Arrival Time">
-            <label>Burst Time:</label>
-            <input type="number" class="burstTime" placeholder="Enter Burst Time">
-        `;
+                    <h3>Process ${i + 1}</h3>
+                    <label>Arrival Time:</label>
+                    <input type="number" class="arrivalTime" placeholder="Enter Arrival Time">
+                    <label>Burst Time:</label>
+                    <input type="number" class="burstTime" placeholder="Enter Burst Time">
+                `;
         processInputsDiv.appendChild(processDiv);
     }
 }
@@ -97,6 +100,7 @@ function runFCFS() {
     });
 
     displayResults(results);
+    return results;
 }
 
 function runSJFNonPreemptive() {
@@ -136,6 +140,7 @@ function runSJFNonPreemptive() {
     }
 
     displayResults(results);
+    return results;
 }
 
 function runSJFPreemptive() {
@@ -201,10 +206,11 @@ function runSJFPreemptive() {
     }));
 
     displayResults(results);
+    return results;
 }
 
 function runRoundRobin() {
-    const data = extractProcessData(); // Function to extract input data
+    const data = extractProcessData();
     if (!data) return;
 
     const timeQuantum = parseInt(document.getElementById("timeQuantum").value);
@@ -221,7 +227,7 @@ function runRoundRobin() {
         completionTime: 0,
         turnaroundTime: 0,
         waitingTime: 0,
-        responseTime: -1, // Initialize response time to -1
+        responseTime: -1,
     }));
 
     let currentTime = 0;
@@ -229,11 +235,10 @@ function runRoundRobin() {
     const results = [];
     let completed = 0;
 
-    processes.sort((a, b) => a.arrivalTime - b.arrivalTime); // Sort by arrival time
+    processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
     let lastAddedIndex = 0;
 
     while (completed < processes.length) {
-        // Add all processes that have arrived by the current time to the queue
         while (
             lastAddedIndex < processes.length &&
             processes[lastAddedIndex].arrivalTime <= currentTime
@@ -242,7 +247,6 @@ function runRoundRobin() {
             lastAddedIndex++;
         }
 
-        // If no process is in the queue, jump to the next process arrival time
         if (queue.length === 0) {
             currentTime++;
             continue;
@@ -250,13 +254,11 @@ function runRoundRobin() {
 
         const currentProcess = queue.shift();
 
-        // If the process is executing for the first time, calculate response time
         if (currentProcess.responseTime === -1) {
             currentProcess.responseTime =
                 currentTime - currentProcess.arrivalTime;
         }
 
-        // Execute the process for the time quantum or until it finishes
         const executionTime = Math.min(
             timeQuantum,
             currentProcess.remainingTime
@@ -264,7 +266,6 @@ function runRoundRobin() {
         currentProcess.remainingTime -= executionTime;
         currentTime += executionTime;
 
-        // Add any new processes that have arrived during execution
         while (
             lastAddedIndex < processes.length &&
             processes[lastAddedIndex].arrivalTime <= currentTime
@@ -273,11 +274,9 @@ function runRoundRobin() {
             lastAddedIndex++;
         }
 
-        // If the process is not finished, re-add it to the queue
         if (currentProcess.remainingTime > 0) {
             queue.push(currentProcess);
         } else {
-            // Process has completed
             completed++;
             currentProcess.completionTime = currentTime;
             currentProcess.turnaroundTime =
@@ -298,6 +297,7 @@ function runRoundRobin() {
     }
 
     displayResults(results);
+    return results;
 }
 
 function runPriorityScheduling() {
@@ -405,59 +405,131 @@ function runPriorityScheduling() {
     }));
 
     displayResults(results);
+    return results;
+}
+
+function compareAlgorithms() {
+    const fcfsResults = runFCFS();
+    const sjfNonPreemptiveResults = runSJFNonPreemptive();
+    const sjfPreemptiveResults = runSJFPreemptive();
+    const roundRobinResults = runRoundRobin();
+    const priorityResults = runPriorityScheduling();
+
+    const allResults = [
+        { algorithm: "FCFS", results: fcfsResults },
+        { algorithm: "SJF Non-Preemptive", results: sjfNonPreemptiveResults },
+        { algorithm: "SJF Preemptive", results: sjfPreemptiveResults },
+        { algorithm: "Round Robin", results: roundRobinResults },
+        { algorithm: "Priority Scheduling", results: priorityResults },
+    ];
+
+    const validResults = allResults.filter(
+        (result) => result.results && result.results.length > 0
+    );
+
+    if (validResults.length === 0) {
+        alert("No results to compare.");
+        return;
+    }
+
+    validResults.forEach((algorithm) => {
+        algorithm.avgWaitingTime =
+            algorithm.results.reduce((sum, p) => sum + p.waitingTime, 0) /
+            algorithm.results.length;
+    });
+
+    const minAvgWaitingTime = Math.min(
+        ...validResults.map((algo) => algo.avgWaitingTime)
+    );
+
+    const bestAlgorithms = validResults.filter(
+        (algo) => algo.avgWaitingTime === minAvgWaitingTime
+    );
+
+    displayBestAlgorithm(bestAlgorithms);
+}
+
+function displayBestAlgorithm(bestAlgorithms) {
+    const resultsTable = document.getElementById("bestAlgorithmResults");
+    let htmlContent = `
+        <h3>Best Algorithm(s):</h3>
+    `;
+
+    bestAlgorithms.forEach((bestAlgorithm) => {
+        htmlContent += `
+            <h4>${bestAlgorithm.algorithm}</h4>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Process</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                        <th>Completion Time</th>
+                        <th>Turnaround Time</th>
+                        <th>Waiting Time</th>
+                        <th>Response Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${bestAlgorithm.results
+                        .map(
+                            (p) =>
+                                `<tr>
+                                    <td>P${p.id}</td>
+                                    <td>${p.arrivalTime}</td>
+                                    <td>${p.burstTime}</td>
+                                    <td>${p.completionTime}</td>
+                                    <td>${p.turnaroundTime}</td>
+                                    <td>${p.waitingTime}</td>
+                                    <td>${p.responseTime}</td>
+                                </tr>`
+                        )
+                        .join("")}
+                </tbody>
+            </table>
+            <h4>Average Waiting Time: ${bestAlgorithm.avgWaitingTime.toFixed(
+                2
+            )}</h4>
+        `;
+    });
+
+    resultsTable.innerHTML = htmlContent;
 }
 
 function displayResults(results) {
+    const totalWaitingTime = results.reduce((sum, p) => sum + p.waitingTime, 0);
+    const avgWaitingTime = (totalWaitingTime / results.length).toFixed(2);
     const resultsTable = document.getElementById("resultsTable");
-
-    if (!resultsTable) {
-        console.error("Results table element not found in the DOM.");
-        return;
-    }
-
-    if (results.length === 0) {
-        resultsTable.innerHTML = `<p>No results to display.</p>`;
-        return;
-    }
-
-    const totalWaitingTime = results.reduce(
-        (sum, process) => sum + process.waitingTime,
-        0
-    );
-    const averageWaitingTime = (totalWaitingTime / results.length).toFixed(2);
-
     resultsTable.innerHTML = `
-        <table class="results-table">
-            <thead>
-                <tr>
-                    <th>Process</th>
-                    <th>Arrival Time</th>
-                    <th>Burst Time</th>
-                    <th>Completion Time</th>
-                    <th>Turnaround Time</th>
-                    <th>Waiting Time</th>
-                    <th>Response Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${results
-                    .map(
-                        (p) =>
-                            `<tr>
-                                <td>P${p.id}</td>
-                                <td>${p.arrivalTime}</td>
-                                <td>${p.burstTime}</td>
-                                <td>${p.completionTime}</td>
-                                <td>${p.turnaroundTime}</td>
-                                <td>${p.waitingTime}</td>
-                                <td>${p.responseTime}</td>
-                            </tr>`
-                    )
-                    .join("")}
-            </tbody>
-        </table>
-        <div class="average-waiting-time">
-            <p><strong>Average Waiting Time:</strong> ${averageWaitingTime}</p>
-        </div>
-    `;
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Process</th>
+                            <th>Arrival Time</th>
+                            <th>Burst Time</th>
+                            <th>Completion Time</th>
+                            <th>Turnaround Time</th>
+                            <th>Waiting Time</th>
+                            <th>Response Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${results
+                            .map(
+                                (p) =>
+                                    `<tr>
+                                        <td>P${p.id}</td>
+                                        <td>${p.arrivalTime}</td>
+                                        <td>${p.burstTime}</td>
+                                        <td>${p.completionTime}</td>
+                                        <td>${p.turnaroundTime}</td>
+                                        <td>${p.waitingTime}</td>
+                                        <td>${p.responseTime}</td>
+                                    </tr>`
+                            )
+                            .join("")}
+                    </tbody>
+                </table>
+                <h4>Average Waiting Time: ${avgWaitingTime}</h4>
+            `;
 }

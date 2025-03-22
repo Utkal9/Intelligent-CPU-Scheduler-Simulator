@@ -6,6 +6,17 @@ body {
     color: #333;
     line-height: 1.6;
     background-color: #f4f4f9;
+    height: 100%; /* For sticky footer */
+}
+
+html,
+body {
+    height: 100%; /* For sticky footer */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Navbar */
@@ -48,7 +59,7 @@ body {
     background: linear-gradient(to right, #3498db, #8e44ad);
     color: white;
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 4rem 1rem;
     margin-bottom: 2rem;
 }
 
@@ -151,49 +162,58 @@ button {
 }
 
 /* Results Section */
-.results {
+.results,
+.best-algorithm {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 2rem;
+    margin-top: 2rem;
 }
 
-.results h2 {
+.results h2,
+.best-algorithm h3 {
     text-align: center;
     margin-bottom: 1.5rem;
+    color: #2c3e50;
 }
 
-#resultsTable {
-    overflow-x: auto;
-}
-
-#resultsTable table {
+/* Table Styles */
+.results-table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 1rem;
 }
 
-#resultsTable th,
-#resultsTable td {
+.results-table th,
+.results-table td {
     text-align: center;
     padding: 0.75rem;
     border: 1px solid #ddd;
 }
 
-#resultsTable th {
+.results-table th {
     background-color: #2c3e50;
     color: white;
     font-weight: bold;
 }
 
-#resultsTable tr:nth-child(even) {
+.results-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
+.results-table tr:hover {
+    background-color: #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+/* Highlighted Average Time */
 .average-waiting-time {
     margin-top: 10px;
     font-size: 1.2em;
     font-weight: bold;
     color: #333;
+    text-align: center;
 }
 
 /* Footer */
@@ -202,10 +222,33 @@ footer {
     color: white;
     text-align: center;
     padding: 1rem 0;
-    margin-top: 2rem;
+    margin-top: auto; /* Sticky footer */
     font-size: 0.9rem;
 }
 
 footer p {
     margin: 0;
+}
+
+/* Focus Styles for Accessibility */
+button:focus,
+a:focus {
+    outline: 2px dashed #1abc9c;
+    outline-offset: 2px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .algorithm-buttons {
+        flex-direction: column;
+    }
+
+    button {
+        min-width: 100%;
+    }
 }

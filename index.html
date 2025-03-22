@@ -3,6 +3,10 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Simulate and analyze CPU scheduling algorithms with real-time visualizations. Compare different scheduling algorithms and find the best one."
+        />
         <title>Intelligent CPU Scheduler Simulator</title>
         <link rel="stylesheet" href="styles.css" />
     </head>
@@ -18,7 +22,7 @@
             </nav>
         </header>
 
-        <section id="hero">
+        <section id="hero" class="hero">
             <div class="hero-content">
                 <h1>Welcome to the Intelligent CPU Scheduler Simulator</h1>
                 <p>
@@ -37,8 +41,13 @@
                     type="number"
                     id="numProcesses"
                     placeholder="Enter number of processes"
+                    aria-label="Enter the number of processes for simulation"
                 />
-                <button id="generateProcesses" class="primary-button">
+                <button
+                    id="generateProcesses"
+                    class="primary-button"
+                    aria-label="Generate processes"
+                >
                     Generate Processes
                 </button>
             </div>
@@ -51,28 +60,70 @@
                     type="number"
                     id="timeQuantum"
                     placeholder="Enter time quantum"
+                    aria-label="Enter time quantum for Round Robin algorithm"
                 />
             </div>
 
             <div class="algorithm-buttons">
-                <button id="fcfsButton" class="secondary-button">FCFS</button>
-                <button id="sjfNonPreemptiveButton" class="secondary-button">
+                <button
+                    id="fcfsButton"
+                    class="secondary-button"
+                    aria-label="Run First Come First Serve algorithm"
+                >
+                    FCFS
+                </button>
+                <button
+                    id="sjfNonPreemptiveButton"
+                    class="secondary-button"
+                    aria-label="Run Shortest Job First Non-Preemptive algorithm"
+                >
                     SJF Non-Preemptive
                 </button>
-                <button id="sjfPreemptiveButton" class="secondary-button">
+                <button
+                    id="sjfPreemptiveButton"
+                    class="secondary-button"
+                    aria-label="Run Shortest Job First Preemptive algorithm"
+                >
                     SJF Preemptive
                 </button>
-                <button id="roundRobinButton" class="secondary-button">
+                <button
+                    id="roundRobinButton"
+                    class="secondary-button"
+                    aria-label="Run Round Robin algorithm"
+                >
                     Round Robin
                 </button>
-                <button id="priorityButton" class="secondary-button">
+                <button
+                    id="priorityButton"
+                    class="secondary-button"
+                    aria-label="Run Priority Scheduling algorithm"
+                >
                     Priority Scheduling
+                </button>
+            </div>
+
+            <div class="form-section">
+                <button
+                    id="compareAlgorithmsButton"
+                    class="primary-button"
+                    aria-label="Compare all algorithms"
+                >
+                    Compare Algorithms
                 </button>
             </div>
 
             <div id="results" class="results" aria-label="Simulation Results">
                 <h2>Simulation Results</h2>
-                <div id="resultsTable"></div>
+                <div id="resultsTable" role="region" aria-live="polite"></div>
+            </div>
+
+            <div
+                id="bestAlgorithm"
+                class="best-algorithm"
+                role="region"
+                aria-live="polite"
+            >
+                <div id="bestAlgorithmResults"></div>
             </div>
         </section>
 
