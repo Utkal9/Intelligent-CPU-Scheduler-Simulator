@@ -6,3 +6,4 @@ RoundRobin.class
 SJF_Non_Preemptive.class
 SJF_Preemptive.class
 IntelligentCpuScheduleSimulator$SchedulingResult.class
+.vscode/
