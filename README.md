@@ -147,5 +147,3 @@ _(Add screenshots of the Gantt chart visualization here)_
 This project is licensed under the **MIT License**.
 
 ---
-
-Feel free to ask if you need help with customization or additional sections!
