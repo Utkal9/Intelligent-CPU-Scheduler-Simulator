@@ -13,10 +13,11 @@
             rel="stylesheet"
         />
         <link rel="stylesheet" href="styles.css" />
+        <link rel="icon" href="icon.png" type="image/png" />
     </head>
     <body>
         <header class="navbar">
-            <div class="logo"><img src="icon.png" /></div>
+            <div class="logo"><img src="icon.png" class="logo" /></div>
             <nav>
                 <ul>
                     <li><a href="#features">Features</a></li>
@@ -141,11 +142,16 @@
         </section>
 
         <section id="features" class="container py-5">
-            <h2 class="text-center">Features</h2>
-            <div class="row g-4 mt-4">
-                <div class="col-md-6">
+            <h2 class="text-center mb-4">Features</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
-                        <div class="card-body">
+                        <img
+                            src="image1.jpeg"
+                            class="card-img-top"
+                            alt="Algorithm Metrics"
+                        />
+                        <div class="card-body text-center">
                             <h5 class="card-title">
                                 Algorithm Performance Metrics
                             </h5>
@@ -157,9 +163,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
-                        <div class="card-body">
+                        <img
+                            src="image2.jpeg"
+                            class="card-img-top"
+                            alt="Gantt Chart"
+                        />
+                        <div class="card-body text-center">
                             <h5 class="card-title">Real-Time Gantt Chart</h5>
                             <p class="card-text">
                                 Visualize scheduling processes with a real-time
@@ -168,9 +179,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
-                        <div class="card-body">
+                        <img
+                            src="image3.jpeg"
+                            class="card-img-top"
+                            alt="Interactive Input"
+                        />
+                        <div class="card-body text-center">
                             <h5 class="card-title">Interactive Input</h5>
                             <p class="card-text">
                                 Add processes dynamically or upload a file to
@@ -179,9 +195,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
-                        <div class="card-body">
+                        <img
+                            src="image4.jpeg"
+                            class="card-img-top"
+                            alt="Export Results"
+                        />
+                        <div class="card-body text-center">
                             <h5 class="card-title">Export Results</h5>
                             <p class="card-text">
                                 Download simulation results as a CSV or PDF file
@@ -190,9 +211,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
-                        <div class="card-body">
+                        <img
+                            src="image5.jpeg"
+                            class="card-img-top"
+                            alt="Educational Mode"
+                        />
+                        <div class="card-body text-center">
                             <h5 class="card-title">Educational Mode</h5>
                             <p class="card-text">
                                 Step through the execution of algorithms to
@@ -201,9 +227,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100">
-                        <div class="card-body">
+                        <img
+                            src="image6.jpeg"
+                            class="card-img-top"
+                            alt="Dark Mode"
+                        />
+                        <div class="card-body text-center">
                             <h5 class="card-title">Dark Mode</h5>
                             <p class="card-text">
                                 Toggle between light and dark themes to suit
@@ -215,26 +246,58 @@
             </div>
         </section>
 
-        <section id="about" class="about-section">
+        <section
+            id="about"
+            class="about-section py-5 text-light"
+            style="background-color: #343a40;"
+        >
             <div class="container">
-                <h2 class="text-center">About the Simulator</h2>
-                <p>
-                    The <strong>Intelligent CPU Scheduler Simulator</strong> is
-                    a comprehensive tool designed to help users visualize and
-                    compare various CPU scheduling algorithms in real-time. With
-                    features such as detailed performance metrics, Gantt chart
-                    visualizations, and interactive inputs, this simulator
-                    provides an intuitive learning experience for students,
-                    professionals, and educators.
-                </p>
-                <p>
-                    Whether you're analyzing the efficiency of First Come First
-                    Serve, Shortest Job First, Round Robin, or Priority
-                    Scheduling algorithms, this platform ensures accurate
-                    results and a seamless simulation experience. Our goal is to
-                    bridge the gap between theory and practical understanding of
-                    CPU scheduling.
-                </p>
+                <h2 class="text-center mb-4">About the Simulator</h2>
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <img
+                            src="image7.jpeg"
+                            alt="Simulator Illustration"
+                            class="img-fluid rounded shadow"
+                        />
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            The
+                            <strong>Intelligent CPU Scheduler Simulator</strong>
+                            is an advanced tool designed to bring CPU scheduling
+                            theories to life. It empowers users with interactive
+                            simulations, real-time visualizations, and in-depth
+                            performance metrics to enhance understanding and
+                            productivity.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li>
+                                <i
+                                    class="bi bi-check-circle-fill text-success"
+                                ></i>
+                                Supports multiple scheduling algorithms.
+                            </li>
+                            <li>
+                                <i
+                                    class="bi bi-check-circle-fill text-success"
+                                ></i>
+                                Detailed and accurate performance metrics.
+                            </li>
+                            <li>
+                                <i
+                                    class="bi bi-check-circle-fill text-success"
+                                ></i>
+                                Seamless, user-friendly interface.
+                            </li>
+                        </ul>
+                        <p>
+                            Our mission is to simplify CPU scheduling concepts
+                            and make them accessible to everyone, from students
+                            to industry professionals.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
 
