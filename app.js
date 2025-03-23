@@ -452,14 +452,24 @@ function compareAlgorithms() {
         algorithm.avgWaitingTime =
             algorithm.results.reduce((sum, p) => sum + p.waitingTime, 0) /
             algorithm.results.length;
+
+        algorithm.avgTurnaroundTime =
+            algorithm.results.reduce((sum, p) => sum + p.turnaroundTime, 0) /
+            algorithm.results.length;
     });
 
     const minAvgWaitingTime = Math.min(
         ...validResults.map((algo) => algo.avgWaitingTime)
     );
 
+    const minAvgTurnaroundTime = Math.min(
+        ...validResults.map((algo) => algo.avgTurnaroundTime)
+    );
+
     const bestAlgorithms = validResults.filter(
-        (algo) => algo.avgWaitingTime === minAvgWaitingTime
+        (algo) =>
+            algo.avgWaitingTime === minAvgWaitingTime &&
+            algo.avgTurnaroundTime === minAvgTurnaroundTime
     );
 
     displayBestAlgorithm(bestAlgorithms);
@@ -509,6 +519,9 @@ function displayBestAlgorithm(bestAlgorithms) {
             <h4>Average Waiting Time: ${bestAlgorithm.avgWaitingTime.toFixed(
                 2
             )}</h4>
+            <h4>Average Turnaround Time: ${bestAlgorithm.avgTurnaroundTime.toFixed(
+                2
+            )}</h4>
         `;
     });
 
@@ -518,6 +531,12 @@ function displayBestAlgorithm(bestAlgorithms) {
 function displayResults(results) {
     const totalWaitingTime = results.reduce((sum, p) => sum + p.waitingTime, 0);
     const avgWaitingTime = (totalWaitingTime / results.length).toFixed(2);
+
+    const totalTurnaroundTime = results.reduce(
+        (sum, p) => sum + p.turnaroundTime,
+        0
+    );
+    const avgTurnaroundTime = (totalTurnaroundTime / results.length).toFixed(2);
     const resultsTable = document.getElementById("resultsTable");
     resultsTable.innerHTML = `
                 <table class="results-table">
@@ -551,5 +570,6 @@ function displayResults(results) {
                 </table>
                 <br><br>
                 <h4>Average Waiting Time: ${avgWaitingTime}</h4>
+                <h4>Average Turnaround Time: ${avgTurnaroundTime}</h4>
             `;
 }

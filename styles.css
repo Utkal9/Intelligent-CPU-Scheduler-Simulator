@@ -1,3 +1,12 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #8e44ad;
+    --accent-color: #1abc9c;
+    --dark-bg: #2c3e50;
+    --light-bg: #f4f4f9;
+    --text-color: #333;
+    --white: #fff;
+}
 /* Global Styles */
 body {
     font-family: "Arial", sans-serif;
@@ -20,38 +29,41 @@ body {
 }
 
 /* Navbar */
+.logo {
+    height: 40px;
+    width: auto;
+}
+
 .navbar {
     background-color: #cafcff;
-    color: white;
+    padding: 0; /* Reduced padding for compact height */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem 0 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-    width: 30px;
-    height: 30px;
-}
-
-.navbar ul {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: red;
+.nav-link {
+    color: #333;
+    font-weight: bold;
     transition: color 0.3s ease;
 }
 
-.navbar a:hover {
+.nav-link:hover {
     color: #1abc9c;
+}
+
+.dark-mode-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.dark-mode-icon:hover {
+    transform: scale(1.2);
 }
 
 /* Hero Section */
@@ -248,33 +260,53 @@ a:focus {
 
 /* Media Queries */
 @media (max-width: 768px) {
-    .navbar ul {
+    /* Navbar */
+    .navbar-nav {
         flex-direction: column;
+        align-items: center;
         gap: 0.5rem;
     }
 
+    .navbar-brand img {
+        height: 35px; /* Adjust logo size for smaller screens */
+    }
+
+    /* Algorithm Buttons */
     .algorithm-buttons {
         flex-direction: column;
+        gap: 1rem;
     }
 
     button {
-        min-width: 100%;
+        width: 100%;
+    }
+
+    /* Hero Section */
+    #hero h1 {
+        font-size: 2rem;
+    }
+
+    #hero p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Features Section Cards */
+    #features .card {
+        margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    footer {
+        font-size: 0.8rem;
+        padding: 0.75rem 0;
     }
 }
-.carousel-item img {
-    height: 400px;
-    object-fit: cover;
-}
-.carousel-caption h5 {
-    font-size: 1.5rem;
-    color: #fff;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-}
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-}
+
 #features .card {
     border: 1px solid #ddd;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -327,27 +359,111 @@ body.dark-mode .btn:hover {
 body.dark-mode .dark-mode-icon {
     content: "☀️";
 }
+/* About Section */
 .about-section {
-    color: #f8f9fa;
-    background-color: #343a40;
+    background-color: var(--dark-bg);
+    color: var(--white);
     padding: 3rem 1rem;
     border-top: 4px solid #495057;
     border-bottom: 4px solid #495057;
+    text-align: center;
 }
 
 .about-section h2 {
-    color: #f8f9fa;
+    color: var(--white);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.about-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 700px;
+    text-align: left;
 }
 
 .about-section ul li {
     margin-bottom: 1rem;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
 }
 
 .about-section ul li i {
-    margin-right: 0.5rem;
+    color: var(--accent-color);
     font-size: 1.3rem;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
 }
+
+/* Footer Section */
+footer {
+    background-color: var(--dark-bg);
+    color: var(--white);
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #16a085;
+}
+
+footer p {
+    margin: 0.5rem 0;
+}
+
+footer .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+footer .social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+/* Responsive Adjustments for About & Footer Sections */
+@media (max-width: 768px) {
+    .about-section ul {
+        text-align: center;
+    }
+
+    footer .social-icons {
+        gap: 0.75rem;
+    }
+}
+
 .card-img-top {
     height: 200px;
     object-fit: cover;

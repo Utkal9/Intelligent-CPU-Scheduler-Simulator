@@ -43,30 +43,36 @@ public class IntelligentCpuScheduleSimulator {
     // Method to calculate the scheduling algorithm results
     private static void calculate(int[] Process_id, int[] Arrival_time, int[] Burst_time, int[] Completion_time, int[] Turnaround_time, int[] Waiting_time, int[] Response_time, String algorithmName) {
         double totalWT = 0;
-
+        double totalTAT = 0;
+    
         for (int i = 0; i < n; i++) {
             totalWT += Waiting_time[i];
+            totalTAT += Turnaround_time[i];
         }
-
+    
         double avgWT = totalWT / n;
-        System.out.println("Average Waiting Time for " + algorithmName + ": " + avgWT + "\n");
-
+        double avgTAT = totalTAT / n;
+    
+        System.out.println("Average Waiting Time for " + algorithmName + ": " + avgWT);
+        System.out.println("Average Turnaround Time for " + algorithmName + ": " + avgTAT + "\n");
+    
         // If a new best AWT is found, update the best results
         if (avgWT < bestAWT) {
             bestAWT = avgWT;
             bestAlgos.clear();  // Clear previous best algorithms as we found a new best one
             bestAlgos.add(algorithmName);  // Add current algorithm to bestAlgos list
-
+    
             // Store the current algorithm's process info
             bestAlgoResults.clear();
             bestAlgoResults.add(new SchedulingResult(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time));
         } else if (avgWT == bestAWT) {
-            bestAlgos.add(algorithmName);  // If AWT is same, add this algorithm too
-
+            bestAlgos.add(algorithmName);  // If AWT is the same, add this algorithm too
+    
             // Store this algorithm's process info
             bestAlgoResults.add(new SchedulingResult(Process_id, Arrival_time, Burst_time, Completion_time, Turnaround_time, Waiting_time, Response_time));
         }
     }
+    
 
     // Method to display the results from the best scheduling algorithm
     private static void displayResults(SchedulingResult result) {
