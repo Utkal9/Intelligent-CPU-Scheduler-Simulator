@@ -21,12 +21,12 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: #2c3e50;
+    background-color: #cafcff;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 0 1rem;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -46,7 +46,7 @@ body {
 
 .navbar a {
     text-decoration: none;
-    color: white;
+    color: red;
     transition: color 0.3s ease;
 }
 
@@ -134,6 +134,15 @@ button.primary-button {
     background-color: #3498db;
     color: white;
 }
+.sc {
+    color: white;
+}
+.sc:hover {
+    color: rgb(240, 67, 67);
+}
+.compare {
+    text-align: center;
+}
 
 button.primary-button:hover {
     background-color: #2980b9;
@@ -162,7 +171,7 @@ button {
 }
 
 /* Results Section */
-.results,
+/* .results,
 .best-algorithm {
     background-color: white;
     border-radius: 10px;
@@ -176,7 +185,7 @@ button {
     text-align: center;
     margin-bottom: 1.5rem;
     color: #2c3e50;
-}
+} */
 
 /* Table Styles */
 .results-table {
@@ -251,4 +260,99 @@ a:focus {
     button {
         min-width: 100%;
     }
+}
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+}
+.carousel-caption h5 {
+    font-size: 1.5rem;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}
+#features .card {
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#features .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#features h2 {
+    color: #343a40;
+    font-weight: bold;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode a {
+    color: #bb86fc;
+}
+
+body.dark-mode .navbar {
+    background-color: #1f1f1f;
+}
+
+body.dark-mode .btn {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .btn:hover {
+    background-color: #444444;
+}
+
+.dark-mode-icon {
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.dark-mode-icon:hover {
+    transform: scale(1.2);
+}
+
+body.dark-mode .dark-mode-icon {
+    content: "☀️";
+}
+.about-section {
+    background-color: #f4f4f9;
+    color: #2c3e50;
+    padding: 3rem 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+    color: #555;
+}
+
+.about-section p strong {
+    color: #2c3e50;
 }

@@ -17,7 +17,23 @@ document
 document
     .getElementById("compareAlgorithmsButton")
     .addEventListener("click", compareAlgorithms);
+const toggleIcon = document.getElementById("darkModeToggle");
+const body = document.body;
 
+toggleIcon.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    const isDarkMode = body.classList.contains("dark-mode");
+    toggleIcon.textContent = isDarkMode ? "☀️" : "🌙";
+    localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    const darkModeSetting = localStorage.getItem("darkMode");
+    if (darkModeSetting === "enabled") {
+        body.classList.add("dark-mode");
+        toggleIcon.textContent = "☀️";
+    }
+});
 let processes = [];
 
 function generateProcessInputs() {
@@ -452,11 +468,13 @@ function compareAlgorithms() {
 function displayBestAlgorithm(bestAlgorithms) {
     const resultsTable = document.getElementById("bestAlgorithmResults");
     let htmlContent = `
+        <br><br>
         <h3>Best Algorithm(s):</h3>
     `;
 
     bestAlgorithms.forEach((bestAlgorithm) => {
         htmlContent += `
+            <br>
             <h4>${bestAlgorithm.algorithm}</h4>
             <table class="results-table">
                 <thead>
@@ -487,6 +505,7 @@ function displayBestAlgorithm(bestAlgorithms) {
                         .join("")}
                 </tbody>
             </table>
+            <br><br>
             <h4>Average Waiting Time: ${bestAlgorithm.avgWaitingTime.toFixed(
                 2
             )}</h4>
@@ -530,6 +549,7 @@ function displayResults(results) {
                             .join("")}
                     </tbody>
                 </table>
+                <br><br>
                 <h4>Average Waiting Time: ${avgWaitingTime}</h4>
             `;
 }
