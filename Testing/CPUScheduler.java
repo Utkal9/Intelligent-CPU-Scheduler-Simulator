@@ -1,3 +1,4 @@
+package Testing;
 import java.util.*;
 public class CPUScheduler {
     public static void main(String[] args) {

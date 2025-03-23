@@ -17,6 +17,16 @@ document
 document
     .getElementById("compareAlgorithmsButton")
     .addEventListener("click", compareAlgorithms);
+const navbar = document.querySelector(".navbar");
+
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 0) {
+        navbar.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+    } else {
+        navbar.style.boxShadow = "none";
+    }
+});
+
 const toggleIcon = document.getElementById("darkModeToggle");
 const body = document.body;
 
@@ -34,6 +44,27 @@ window.addEventListener("DOMContentLoaded", () => {
         toggleIcon.textContent = "☀️";
     }
 });
+const teamMembers = document.querySelectorAll(".team-member");
+
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = "translateY(0)";
+            }
+        });
+    },
+    { threshold: 0.1 }
+);
+
+teamMembers.forEach((member) => {
+    member.style.opacity = 0;
+    member.style.transform = "translateY(20px)";
+    member.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+    observer.observe(member);
+});
+
 let processes = [];
 
 function generateProcessInputs() {

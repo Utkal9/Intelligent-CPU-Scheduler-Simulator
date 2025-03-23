@@ -1,5 +1,7 @@
+package Testing;
 import java.util.*;
-public class FCFS_Non_Preemptive {
+
+public class SJF_Non_Preemptive {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the number of processes: ");
@@ -21,7 +23,7 @@ public class FCFS_Non_Preemptive {
             Burst_time[i] = sc.nextInt();
         }
 
-        // Sorting of all according at  
+        // Sort processes based on arrival time first
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (Arrival_time[i] > Arrival_time[j]) {
@@ -32,21 +34,37 @@ public class FCFS_Non_Preemptive {
             }
         }
 
-        // Calculate CT with sorted at values
         int currentTime = 0;
-        for (int i = 0; i < n; i++) {
-            if (currentTime < Arrival_time[i]) {
-                currentTime = Arrival_time[i];
-            }
-            Compilation_time[i] = currentTime + Burst_time[i];
-            currentTime = Compilation_time[i];
-        }
+        boolean[] isCompleted = new boolean[n];
+        int completed = 0;
 
-        // Calculate Turnaround Time (TAT), Waiting Time (WT), Response Time (RT)
-        for (int i = 0; i < n; i++) {
-            Turn_arround_time[i] = Compilation_time[i] - Arrival_time[i];
-            Waiting_time[i] = Turn_arround_time[i] - Burst_time[i];
-            Response_time[i] = Waiting_time[i]; // Since FCFS is non-preemptive
+        while (completed < n) {
+            // Find the process with the shortest burst time that has arrived
+            int idx = -1;
+            int minBurstTime = Integer.MAX_VALUE;
+
+            for (int i = 0; i < n; i++) {
+                if (!isCompleted[i] && Arrival_time[i] <= currentTime && Burst_time[i] < minBurstTime) {
+                    minBurstTime = Burst_time[i];
+                    idx = i;
+                }
+            }
+
+            // If no process has arrived yet, increment time
+            if (idx == -1) {
+                currentTime++;
+            } else {
+                Compilation_time[idx] = currentTime + Burst_time[idx];
+                currentTime = Compilation_time[idx];
+
+                // Calculate TAT, WT, and RT for the selected process
+                Turn_arround_time[idx] = Compilation_time[idx] - Arrival_time[idx];
+                Waiting_time[idx] = Turn_arround_time[idx] - Burst_time[idx];
+                Response_time[idx] = Waiting_time[idx]; // Since SJF is non-preemptive
+
+                isCompleted[idx] = true;
+                completed++;
+            }
         }
 
         // Print results
@@ -65,4 +83,3 @@ public class FCFS_Non_Preemptive {
         arr[j] = temp;
     }
 }
-
