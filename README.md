@@ -84,6 +84,7 @@ The **Intelligent CPU Scheduler Simulator** is designed to address these challen
 | **Frontend**         | HTML5, CSS3, JavaScript |
 | **Charting Library** | app.js                  |
 | **Algorithm Logic**  | JavaScript (ES6)        |
+| **Code Editor**      | VS code                 |
 
 ---
 
@@ -92,7 +93,7 @@ The **Intelligent CPU Scheduler Simulator** is designed to address these challen
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Utkal-Behera/Intelligent-CPU-Scheduler-Simulator.git
+    git clone https://github.com/Utkal9/Intelligent-CPU-Scheduler-Simulator.git
     cd Intelligent-CPU-Scheduler-Simulator
     ```
 
@@ -125,13 +126,11 @@ The **Intelligent CPU Scheduler Simulator** is designed to address these challen
 
 ### 🔹 Input Form
 
-_(Add screenshots of your input form here)_
+![Input Form](/Graphical%20UI/assets/input-form.png)
 
 ### 🔹 Gantt Chart
 
-_(Add screenshots of the Gantt chart visualization here)_
-
----
+## ![Gantt Chart](/Graphical%20UI/assets/gantt-chart.png)
 
 ## Future Enhancements
 
@@ -147,5 +146,3 @@ _(Add screenshots of the Gantt chart visualization here)_
 This project is licensed under the **MIT License**.
 
 ---
-
-Feel free to ask if you need help with customization or additional sections!
