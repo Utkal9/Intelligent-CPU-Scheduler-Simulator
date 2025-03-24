@@ -99,7 +99,16 @@ body {
 .cta-button:hover {
     background-color: #16a085;
 }
+/* Dark Mode Button Styles */
+body.dark-mode .cta-button {
+    background-color: #16a085;
+    color: #ecf0f1;
+}
 
+body.dark-mode .cta-button:hover {
+    color: #ecdbff; /* Subtle hover text color change */
+    transform: scale(1.1); /* Slight hover scale effect */
+}
 /* Container Section */
 .container {
     width: 90%;
@@ -586,4 +595,115 @@ footer .social-icons a:hover {
 
 .team-member .social-icons a:hover {
     color: var(--accent-color);
+}
+/* Team Section (Dark Mode) */
+#team {
+    padding: 4rem 2rem;
+    background-color: #1e1e1e; /* Dark background */
+    text-align: center;
+}
+
+#team h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #00adb5; /* Accent color for the heading */
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.team-member {
+    background: #252525; /* Dark card background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle dark shadow */
+    width: 250px;
+    text-align: center;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 173, 181, 0.4); /* Highlight on hover */
+}
+
+.team-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    object-fit: cover;
+    border: 2px solid #00adb5; /* Accent border for images */
+}
+
+.team-member h3 {
+    font-size: 1.25rem;
+    color: #ffffff; /* White text for names */
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: #aaaaaa; /* Light gray for roles */
+    margin: 0.5rem 0 1rem;
+}
+
+.team-member .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.team-member .social-icons a {
+    color: #00adb5; /* Accent color for social icons */
+    font-size: 1.25rem;
+    transition: color 0.3s ease;
+}
+
+.team-member .social-icons a:hover {
+    color: #ffffff; /* Change to white on hover */
+}
+body:not(.dark-mode) .team-section {
+    background-color: #f9f9f9; /* Light background for the section */
+    color: #333; /* Dark text for readability */
+}
+
+body:not(.dark-mode) .team-member {
+    background: #ffffff; /* White background for cards */
+    border: 1px solid #e0e0e0; /* Subtle border for definition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    color: #333; /* Dark text inside cards */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+body:not(.dark-mode) .team-member h3 {
+    color: #222; /* Slightly darker name for emphasis */
+}
+
+body:not(.dark-mode) .team-member p {
+    color: #555; /* Softer text for roles or descriptions */
+}
+
+body:not(.dark-mode) .team-member .social-icons a {
+    color: #007bff; /* Bright blue accent color for social icons */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+body:not(.dark-mode) .team-member .social-icons a:hover {
+    color: #0056b3; /* Darker hover color for icons */
+    transform: scale(1.2); /* Slight hover animation */
+}
+
+body:not(.dark-mode) .team-member:hover {
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2); /* Bright hover effect */
+    transform: translateY(-5px); /* Hover lift effect */
+}
+
+body:not(.dark-mode) .team-member h3:hover {
+    color: #0056b3; /* Accent hover for names */
+    transform: translateY(-3px);
+    transition: transform 0.3s ease, color 0.3s ease;
 }
